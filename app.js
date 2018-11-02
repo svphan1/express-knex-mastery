@@ -6,9 +6,10 @@ const port = process.env.PORT || 3100;
 let beersRoutes = require('./routes/beers');
 let studentsRoutes = require('./routes/students');
 
-app.get('/', (req, res) => {
-  res.send('It worked!')
-});
+app.get('/', (req, res) => res.json({
+  "beers": `https://infinite-waters-48277.herokuapp.com/beers`,
+  "students": `https://infinite-waters-48277.herokuapp.com/students`
+}));
 
 app.use(bodyParser.json());
 app.use(cors()); 
