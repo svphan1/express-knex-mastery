@@ -5,9 +5,8 @@ exports.up = function(knex, Promise) {
         table.increments()
         table.string('name')
         table.string('imageUrl')
-        table.integer('abv')
-        table.string('review')
-
+        table.float('abv')
+        table.text('review')
     })
 };
 

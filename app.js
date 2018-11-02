@@ -10,11 +10,11 @@ app.get('/', (req, res) => {
   res.send('It worked!')
 });
 
+app.use(bodyParser.json());
+app.use(cors()); 
+
 app.use('/beers', beersRoutes);
 app.use('/students', studentsRoutes);
-
-app.use(bodyParser.json());
-app.use(cors());
 
 app.use(notFound);
 app.use(errorHandler);
