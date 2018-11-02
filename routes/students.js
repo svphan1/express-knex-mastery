@@ -1,3 +1,7 @@
+const express = require('express');
+const router = express.Router();
+const knex = require('../db/connection')
+
 const students = [
   {
     id: 1,
