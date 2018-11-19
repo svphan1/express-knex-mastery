@@ -3,8 +3,8 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const port = process.env.PORT || 3100;
-let beersRoutes = require('./routes/beers');
-let studentsRoutes = require('./routes/students');
+const beersRoutes = require('./routes/beers');
+const studentsRoutes = require('./routes/students');
 
 app.get('/', (req, res) => res.json({
   "beers": `https://infinite-waters-48277.herokuapp.com/beers`,
