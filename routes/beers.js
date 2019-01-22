@@ -2,10 +2,18 @@ const express = require('express');
 const router = express.Router();
 const knex = require('../db/connection');
 
+const beerQueries = require('../db/beerQueries')
+
+const { getAllBeers,
+        getOneBeer,
+        postBeer,
+        putBeer,
+        deleteBeer } = require('../db/beerQueries')
+// import { getAllBeers } from '../db/beerQueries'  <---- Correct but can't do in Node b/c syntax not supported yet
+
 //Get all route
 router.get('/', (req, res) => {
-  knex('beer')
-    .orderBy('id', 'asc')
+  getAllBeers()
     .then(beers => {
       res.json({ beers: beers })
     })
@@ -15,8 +23,7 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res, next) => {
   const id = req.params.id
 
-  knex('beer')
-    .where('id', id)
+  getOneBeer(id)
     .then(beer => {
       res.json({ beers: beer })
     })
@@ -27,9 +34,7 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
   const body = req.body
 
-  knex('beer')
-    .insert(body)
-    .returning('*')
+  postBeer(body)
     .then(beer => {
       res.json({ beer: beer[0] })
     })
@@ -40,10 +45,7 @@ router.put('/:id', (req, res) => {
   const id = req.params.id
   const body = req.body
 
-  knex('beer')
-    .where('id', id)
-    .update(body)
-    .returning('*')
+  putBeer(id,body)
     .then(updatedBeer => {
       res.json({ beer: updatedBeer[0] })
     })
@@ -53,10 +55,7 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
   const id = req.params.id
 
-  knex('beer')
-    .where('id', id)
-    .delete()
-    .returning('*')
+  deleteBeer(id)
     .then(deletedBeer => {
       res.json({ beer: deletedBeer[0] })
     })

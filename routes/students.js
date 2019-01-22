@@ -2,11 +2,14 @@ const express = require('express');
 const router = express.Router();
 const knex = require('../db/connection');
 
+const { getAllStudents,
+        getOneStudent,
+        postStudent,
+        putStudent,
+        deleteStudent} = require('../db/studentQueries')
 //Get all
 router.get('/', (req, res) => {
-  console.log('hitting route')
-  knex('student')
-    .orderBy('id', 'asc')
+  getAllStudents()
     .then(students => {
       console.log('here', students)
       res.json({ students: students })
@@ -17,8 +20,7 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res, next) => {
   const id = req.params.id
 
-  knex('student')
-    .where('id', id)
+  getOneStudent(id)
     .then(student => {
       res.json({ students: student })
     })
@@ -28,9 +30,7 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
   const body = req.body
 
-  knex('student')
-    .insert(body)
-    .returning('*')
+  postStudent(body)
     .then(student => {
       res.json({ student: student[0] })
     })
@@ -41,10 +41,7 @@ router.put('/:id', (req, res) => {
   const id = req.params.id
   const body = req.body
 
-  knex('student')
-    .where('id', id)
-    .update(body)
-    .returning('*')
+  putStudent(id,body)
     .then(updatedStudent => {
       res.json({ student: updatedStudent[0] })
     })
@@ -54,10 +51,7 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
   const id = req.params.id
 
-  knex('student')
-    .where('id', id)
-    .delete()
-    .returning('*')
+  deleteStudent(id)
     .then(deletedStudent => {
       res.json({ student: deletedStudent[0] })
     })
